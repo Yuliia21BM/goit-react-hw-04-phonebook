@@ -6,9 +6,8 @@ import { ContactForm } from '../ContactForm/ContactForm';
 import { Filter } from '../Filter/Filter';
 import { ContactList } from '../ContactList/ContactList';
 
-const LS_KEY = 'contacts_item_list';
-
 export class ContactBook extends Component {
+  LS_KEY = 'savedContacts';
   state = {
     contacts: [
       // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -21,12 +20,12 @@ export class ContactBook extends Component {
 
   componentDidUpdate(_, prevState) {
     if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
+      localStorage.setItem(this.LS_KEY, JSON.stringify(this.state.contacts));
     }
   }
 
   componentDidMount() {
-    const savedContacts = JSON.parse(localStorage.getItem(LS_KEY));
+    const savedContacts = JSON.parse(localStorage.getItem(this.LS_KEY));
     if (savedContacts) {
       this.setState({ contacts: savedContacts });
     }
@@ -69,7 +68,7 @@ export class ContactBook extends Component {
     return (
       <Box p="10px">
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler} />
+        <ContactForm onFormSubmit={this.formSubmitHandler} />
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.handleFilterChange} />
         <ContactList
